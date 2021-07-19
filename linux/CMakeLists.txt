@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
 set(BINARY_NAME "erp_client")
-set(APPLICATION_ID "com.example.erp_client")
+set(APPLICATION_ID "tech.c3n7.erp_client.erp_client")
 
 cmake_policy(SET CMP0063 NEW)
 

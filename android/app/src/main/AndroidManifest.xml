@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.erp_client">
+    package="tech.c3n7.erp_client.erp_client">
    <application
         android:label="erp_client"
         android:icon="@mipmap/ic_launcher">

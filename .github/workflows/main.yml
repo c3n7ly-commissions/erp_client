@@ -1,0 +1,82 @@
+name: build
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Install flutter sdk
+        run: |
+          git clone https://github.com/flutter/flutter.git -b beta
+          export PATH="$PATH:`pwd`/flutter/bin"
+          flutter doctor
+          flutter channel beta
+          flutter upgrade
+
+      - name: Install go sdk
+        run: |
+          wget -c https://dl.google.com/go/go1.16.5.linux-amd64.tar.gz -O - | sudo tar -xz -C /usr/local
+          export PATH=$PATH:/usr/local/go/bin
+
+      - name: Install hover
+        run: |
+          sudo apt-get update
+          sudo apt-get install gcc libc6-dev libgl1-mesa-dev xorg-dev msitools mingw-w64 wixl wine64
+          GO111MODULE=on go get -u -a github.com/go-flutter-desktop/hover
+
+      - name: Install AppImage build tool
+        run: |
+          mkdir appimagetool && cd appimagetool
+          wget -nv -c https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+          ln -s appimagetool-x86_64.AppImage appimagetool
+          chmod +x appimagetool && cd ..
+
+      - name: Build linux
+        run: |
+          export PATH="$PATH:`pwd`/flutter/bin"
+          export PATH="$PATH:`go env GOPATH`/bin"
+          export PATH="$PATH:`pwd`/appimagetool"
+          flutter pub get
+          # export CGO_LDFLAGS="-L${HOME}/.cache/hover/engine/linux/"
+          # go get github.com/miguelpruivo/flutter_file_picker/go
+          hover build linux-appimage
+
+      - name: Build windows
+        run: |
+          export PATH="$PATH:`pwd`/flutter/bin"
+          export PATH="$PATH:`go env GOPATH`/bin"
+          export PATH="$PATH:`pwd`/appimagetool"
+          flutter channel stable
+          flutter upgrade
+          hover build windows-msi
+
+      # - name: Run tests
+      # run: |
+      # export CODECOV_TOKEN="1249b809-5297-4530-828c-4da44a3cd7de"
+      # ./flutter/bin/flutter test --coverage
+      # bash <(curl -s https://codecov.io/bash) -f coverage/lcov.info
+
+      - name: Publish Release
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: True
+          tag: continuous
+          name: Continuous build
+          prerelease: True
+          # artifacts: 'go/build/outputs/linux-appimage/project_sekkei-1.0.0-x86_64.AppImage, go/build/outputs/windows-msi/project_sekkei 1.0.0.msi'
+          artifacts: 'go/build/outputs/linux-appimage-release/loans_client-1.0.0-x86_64.AppImage, go/build/outputs/windows-msi-release/loans_client 1.0.0.msi'
+          token: ${{ secrets.GITHUB_TOKEN }}
