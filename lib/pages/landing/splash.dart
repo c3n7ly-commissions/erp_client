@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:erp_client/shared/utils/authed_route_params.dart';
 import 'package:erp_client/shared/widgets/drawer.dart';
+import 'package:erp_client/shared/widgets/appbar.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -15,21 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
     print("Token: " + args.token);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Qubes'),
-        actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(right: 40),
-            child: Tooltip(
-              message: 'Log out',
-              child: IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.power_settings_new_rounded),
-              ),
-            ),
-          ),
-        ],
-      ),
+      appBar: AppBarBuilder.generate(),
       drawer: NavigationDrawer(),
       body: Center(
         child: Text('Yay'),
