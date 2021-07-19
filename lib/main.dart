@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'pages/auth/sign_in.dart';
+import 'pages/landing/splash.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         //
         // -----------
         // landing
-        // '/splash': (context) => SplashScreen(),
+        '/splash': (context) => SplashScreen(),
         //
       },
     );
