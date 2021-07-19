@@ -1,7 +1,8 @@
 {
   "backend": "laravel",
-  "server_address": "http://localhost:8000/api/",
+  "server_address": "http://localhost:8100/api/",
   "login_route": "auth/login",
   "bank_routes": "banks",
   "company_routes": "company"
 }
+
