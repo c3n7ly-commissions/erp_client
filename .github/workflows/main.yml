@@ -78,5 +78,5 @@ jobs:
           name: Continuous build
           prerelease: True
           # artifacts: 'go/build/outputs/linux-appimage/project_sekkei-1.0.0-x86_64.AppImage, go/build/outputs/windows-msi/project_sekkei 1.0.0.msi'
-          artifacts: 'go/build/outputs/linux-appimage-release/loans_client-1.0.0-x86_64.AppImage, go/build/outputs/windows-msi-release/loans_client 1.0.0.msi'
+          artifacts: 'go/build/outputs/linux-appimage-release/erp_client-1.0.0-x86_64.AppImage, go/build/outputs/windows-msi-release/erp_client 1.0.0.msi'
           token: ${{ secrets.GITHUB_TOKEN }}
