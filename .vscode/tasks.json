@@ -7,6 +7,11 @@
             "label": "sync",
             "type": "shell",
             "command": "git pull origin main && git pull upstream main && git push origin main && git push upstream main"
+        },
+        {
+            "label": "run",
+            "type": "shell",
+            "command": "hover run --cache-path 'C:\\cache'"
         }
     ]
 }
